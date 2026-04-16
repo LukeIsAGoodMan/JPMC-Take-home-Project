@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Segment Profiles</title>
+<style>
+  :root { --text:#1a1a2e; --muted:#64748b; --border:#e2e8f0; --bg:#fafafa;
+          --blue:#2563eb; --green:#059669; --amber:#d97706; --purple:#6366f1; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; color:var(--text);
+         background:var(--bg); line-height:1.6; max-width:800px; margin:0 auto; padding:32px 24px; }
+  h1 { font-size:1.8rem; font-weight:800; margin-bottom:8px; }
+  .sub { color:var(--muted); margin-bottom:24px; }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:0.9rem; }
+  th { background:#f1f5f9; padding:10px 12px; text-align:left; font-size:0.8rem;
+       text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); border-bottom:2px solid var(--border); }
+  td { padding:10px 12px; border-bottom:1px solid var(--border); }
+  .num { text-align:right; font-family:'Cascadia Code',monospace; }
+  .card { border:1px solid var(--border); border-radius:12px; padding:24px;
+          margin:20px 0; background:#fff; }
+  .card h2 { font-size:1.2rem; margin-bottom:4px; }
+  .card .meta { font-size:0.85rem; color:var(--muted); margin-bottom:12px; }
+  .card ul { padding-left:20px; font-size:0.9rem; }
+  .card ul li { margin-bottom:4px; }
+  .card .action { margin-top:12px; padding:12px; background:#f8fafc; border-radius:8px; font-size:0.85rem; }
+  .bar { height:20px; border-radius:4px; display:inline-block; vertical-align:middle; }
+  .note { font-size:0.8rem; color:var(--muted); margin-top:24px; padding-top:16px; border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<h1>Segment Profiles</h1>
+<p class="sub">3 final segments from K-Prototypes clustering. Target and weight excluded from clustering input.</p>
+
+<table>
+  <tr><th>Seg</th><th>Name</th><th class="num">Pop Share</th><th class="num">&gt;50K Rate</th><th class="num">Enrichment</th></tr>
+  <tr><td>0</td><td>Senior/Retired Householders</td><td class="num">20.1%</td><td class="num">2.2%</td><td class="num">0.35x</td></tr>
+  <tr><td>1</td><td>Youth/Dependent Non-Workforce</td><td class="num">33.1%</td><td class="num">0.05%</td><td class="num">0.01x</td></tr>
+  <tr><td>2</td><td>Mid-Career Working Householders</td><td class="num">46.7%</td><td class="num">12.5%</td><td class="num">2.12x</td></tr>
+</table>
+
+<div class="card" style="border-top:4px solid var(--purple);">
+  <h2>Segment 0: Senior/Retired Householders</h2>
+  <div class="meta">20.1% of population &middot; 2.2% &gt;$50K &middot; 0.35x enrichment</div>
+  <ul>
+    <li>Mean age <strong>63</strong>, median 66</li>
+    <li>Mostly married (60%), 22% widowed</li>
+    <li>66% female</li>
+    <li>High school education dominant (36%)</li>
+    <li>~2 weeks/year worked; 91% not in universe for class of worker</li>
+    <li>57% householders, 35% spouses</li>
+    <li>No children under 18 in household</li>
+  </ul>
+  <div class="action">
+    <strong>Marketing approach:</strong> Retirement income products (annuities, CDs), estate planning, Medicare supplements, health/insurance cross-sell. Channels: direct mail, phone, community events.
+  </div>
+</div>
+
+<div class="card" style="border-top:4px solid var(--amber);">
+  <h2>Segment 1: Youth &amp; Dependents</h2>
+  <div class="meta">33.1% of population &middot; 0.05% &gt;$50K &middot; 0.01x enrichment</div>
+  <ul>
+    <li>Mean age <strong>11</strong>, median 10</li>
+    <li>94% never married</li>
+    <li>70% education = "Children"</li>
+    <li>74% child under 18 in household</li>
+    <li>57% with both parents present, 19% mother only</li>
+    <li>~1 week/year worked; almost entirely non-workforce</li>
+    <li>90% nonfiler for tax purposes</li>
+  </ul>
+  <div class="action">
+    <strong>Marketing approach:</strong> Family-indirect via parents/guardians. Youth savings accounts, education products, custodial accounts. Long-horizon relationship building. Channels: family-targeted digital, in-app.
+    <br><em>Caution: Very low direct income incidence. Not suitable for income-based targeting.</em>
+  </div>
+</div>
+
+<div class="card" style="border-top:4px solid var(--green);">
+  <h2>Segment 2: Mid-Career Working Householders</h2>
+  <div class="meta">46.7% of population &middot; 12.5% &gt;$50K &middot; 2.12x enrichment</div>
+  <ul>
+    <li>Mean age <strong>39</strong>, median 38</li>
+    <li>62% married-civilian spouse present</li>
+    <li>54% male</li>
+    <li>33% high school, 20% some college, 18% bachelor's</li>
+    <li>~49 weeks/year worked; 41% full-time schedules</li>
+    <li>55% householders, 28% spouses</li>
+    <li>69% private sector, 9% self-employed</li>
+    <li>60% joint tax filers under 65</li>
+  </ul>
+  <div class="action">
+    <strong>Marketing approach:</strong> Premium financial products (investment, retirement planning), wealth-management cross-sell, career-stage offers. Channels: digital, targeted email, direct advisor contact.
+    <br><strong>This is the primary high-value targeting segment.</strong> The classifier's probability score provides a continuous sub-targeting dimension within this group.
+  </div>
+</div>
+
+<p class="note">
+  Segment profiles use CPS survey weights for population shares. Income (&gt;$50K) was used for post-hoc profiling only — it was NOT a clustering input. Population shares are weighted; raw sample shares differ slightly.
+</p>
+
+</body>
+</html>
