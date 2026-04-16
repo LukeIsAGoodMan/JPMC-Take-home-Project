@@ -1,0 +1,11 @@
+# 忽略所有 jsonl 和 csv 文件
+*.jsonl
+*.csv
+
+# 忽略输出文件夹
+pipeline/outputs/
+pipeline/catboost_info/
+
+# 忽略缓存
+__pycache__/
+.env

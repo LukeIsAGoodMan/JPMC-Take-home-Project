@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Census Income Classification &amp; Marketing Segmentation — Final Report</title>
+<style>
+  :root {
+    --bg: #fafafa; --surface: #ffffff; --text: #1a1a2e; --muted: #64748b;
+    --accent: #2563eb; --accent-light: #dbeafe; --accent-dark: #1e40af;
+    --green: #059669; --green-bg: #d1fae5; --amber: #d97706; --amber-bg: #fef3c7;
+    --red: #dc2626; --red-bg: #fee2e2; --border: #e2e8f0;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font); color: var(--text); background: var(--bg);
+         line-height: 1.7; font-size: 16px; }
+
+  /* Layout */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+
+  /* Typography */
+  h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; }
+  h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 16px; color: var(--accent-dark);
+       border-bottom: 3px solid var(--accent); padding-bottom: 8px; display: inline-block; }
+  h3 { font-size: 1.15rem; font-weight: 600; margin: 24px 0 8px; }
+  p { margin-bottom: 14px; }
+  .subtitle { font-size: 1.15rem; color: var(--muted); margin-top: 8px; font-weight: 400; }
+  .label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+           letter-spacing: 0.08em; color: var(--muted); }
+  strong { font-weight: 600; }
+
+  /* Cover */
+  .cover { text-align: center; padding: 80px 0 48px; background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+           color: #fff; margin-bottom: 0; border-bottom: none; }
+  .cover h1 { color: #fff; font-size: 2.6rem; }
+  .cover .subtitle { color: rgba(255,255,255,0.8); font-size: 1.2rem; }
+  .cover-badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+                 border-radius: 24px; padding: 6px 20px; margin-top: 24px; font-size: 0.9rem; }
+
+  /* Navigation */
+  nav { background: var(--surface); border-bottom: 1px solid var(--border);
+        position: sticky; top: 0; z-index: 100; padding: 12px 0; }
+  nav .container { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  nav a { font-size: 0.8rem; color: var(--accent); text-decoration: none;
+          padding: 4px 12px; border-radius: 4px; white-space: nowrap; }
+  nav a:hover { background: var(--accent-light); }
+
+  /* Cards */
+  .card-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 20px 0; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+          padding: 20px; text-align: center; }
+  .card .value { font-size: 2rem; font-weight: 800; color: var(--accent-dark); }
+  .card .label { margin-top: 4px; }
+  .card.green .value { color: var(--green); }
+  .card.amber .value { color: var(--amber); }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9rem; }
+  th { background: #f1f5f9; font-weight: 600; text-align: left; padding: 10px 14px;
+       border-bottom: 2px solid var(--border); font-size: 0.8rem; text-transform: uppercase;
+       letter-spacing: 0.04em; color: var(--muted); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: #f8fafc; }
+  .num { text-align: right; font-family: var(--mono); font-size: 0.85rem; }
+  tr.highlight td { background: var(--accent-light); font-weight: 600; }
+
+  /* Callouts */
+  .callout { border-left: 4px solid var(--accent); background: var(--accent-light);
+             padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 20px 0; }
+  .callout.green { border-color: var(--green); background: var(--green-bg); }
+  .callout.amber { border-color: var(--amber); background: var(--amber-bg); }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  /* Stage ribbon */
+  .stage-ribbon { display: flex; gap: 4px; margin: 24px 0; flex-wrap: wrap; }
+  .stage-pill { flex: 1; min-width: 90px; text-align: center; padding: 10px 8px;
+                border-radius: 8px; font-size: 0.75rem; font-weight: 600;
+                background: var(--accent-light); color: var(--accent-dark); }
+  .stage-pill.active { background: var(--accent); color: #fff; }
+  .stage-pill .num { font-size: 1.1rem; display: block; font-family: var(--font); }
+
+  /* Diagrams */
+  .diagram { margin: 24px 0; text-align: center; }
+  .flow { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; margin: 16px 0; }
+  .flow-box { background: var(--surface); border: 2px solid var(--accent); border-radius: 10px;
+              padding: 12px 18px; font-weight: 600; font-size: 0.85rem; white-space: nowrap; }
+  .flow-arrow { font-size: 1.4rem; color: var(--accent); padding: 0 6px; }
+  .flow-box.highlight { background: var(--accent); color: #fff; }
+
+  /* Bar charts (pure CSS) */
+  .bar-chart { margin: 16px 0; }
+  .bar-row { display: flex; align-items: center; margin: 6px 0; }
+  .bar-label { width: 200px; font-size: 0.85rem; text-align: right; padding-right: 12px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 24px; background: #f1f5f9; border-radius: 4px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end;
+              padding-right: 8px; font-size: 0.75rem; font-weight: 600; color: #fff; min-width: 40px; }
+  .bar-fill.blue { background: var(--accent); }
+  .bar-fill.green { background: var(--green); }
+  .bar-fill.amber { background: var(--amber); }
+  .bar-fill.red { background: var(--red); }
+
+  /* Segment cards */
+  .seg-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 20px 0; }
+  .seg-card { border: 1px solid var(--border); border-radius: 12px; padding: 20px; background: var(--surface); }
+  .seg-card h4 { font-size: 1rem; margin-bottom: 8px; }
+  .seg-card .meta { font-size: 0.85rem; color: var(--muted); margin-bottom: 12px; }
+  .seg-card ul { font-size: 0.9rem; padding-left: 18px; }
+  .seg-card ul li { margin-bottom: 4px; }
+
+  /* Print */
+  @media print {
+    nav { display: none; }
+    .cover { background: #1e3a5f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    section { break-inside: avoid; }
+    body { font-size: 11pt; }
+  }
+  @media (max-width: 640px) {
+    .bar-label { width: 120px; font-size: 0.75rem; }
+    .card-row { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ COVER ═══════════ -->
+<section class="cover">
+<div class="container">
+  <h1>Census Income Classification<br>&amp; Marketing Segmentation</h1>
+  <p class="subtitle">A two-layer targeting design for retail marketing on weighted CPS data</p>
+  <div class="cover-badge">199,523 records &middot; 42 features &middot; CPS 1994–1995</div>
+</div>
+</section>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav>
+<div class="container">
+  <a href="#summary">Summary</a>
+  <a href="#problem">Problem</a>
+  <a href="#data">Data</a>
+  <a href="#preprocessing">Preprocessing</a>
+  <a href="#classification">Classification</a>
+  <a href="#segmentation">Segmentation</a>
+  <a href="#strategy">Strategy</a>
+  <a href="#insights">Insights</a>
+  <a href="#limitations">Limitations</a>
+  <a href="#references">References</a>
+</div>
+</nav>
+
+<!-- ═══════════ STAGE RIBBON ═══════════ -->
+<section style="padding: 24px 0 0; border-bottom: none;">
+<div class="container">
+  <p class="label">Project stages</p>
+  <div class="stage-ribbon">
+    <div class="stage-pill"><span class="num">1</span>Setup</div>
+    <div class="stage-pill"><span class="num">2</span>Profiling</div>
+    <div class="stage-pill"><span class="num">3</span>Design</div>
+    <div class="stage-pill"><span class="num">4</span>Preprocess</div>
+    <div class="stage-pill"><span class="num">5</span>Baseline</div>
+    <div class="stage-pill"><span class="num">6</span>Tuning</div>
+    <div class="stage-pill"><span class="num">7</span>Segments</div>
+    <div class="stage-pill active"><span class="num">8</span>Package</div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════ EXECUTIVE SUMMARY ═══════════ -->
+<section id="summary">
+<div class="container">
+  <h2>Executive Summary</h2>
+  <p>This project builds two complementary tools for retail targeting on weighted CPS census data:</p>
+
+  <div class="card-row">
+    <div class="card green">
+      <div class="value">0.70</div>
+      <div class="label">Test PR-AUC</div>
+    </div>
+    <div class="card green">
+      <div class="value">0.96</div>
+      <div class="label">Test ROC-AUC</div>
+    </div>
+    <div class="card">
+      <div class="value">3</div>
+      <div class="label">Market Segments</div>
+    </div>
+    <div class="card">
+      <div class="value">0.25</div>
+      <div class="label">Balanced Threshold</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>The core insight</strong>
+    The final deliverable is not "just a model." It is a two-layer targeting design:
+    the <strong>classifier</strong> tells you <em>who to prioritize</em>;
+    the <strong>segmentation</strong> tells you <em>how to approach them</em>.
+    Neither alone is the full answer.
+  </div>
+
+  <p><strong>Classifier</strong>: CatBoost on a reduced feature set (31 features). Tuned with a 27-configuration grid search. Three operating modes (precision-leaning, balanced, recall-leaning) give the business control over the targeting tradeoff.</p>
+  <p><strong>Segmentation</strong>: K-Prototypes clustering on 17 mixed-type features produces 3 interpretable life-stage groups — seniors, youth/dependents, and working-age householders — each suggesting distinct marketing approaches.</p>
+</div>
+</section>
+
+<!-- ═══════════ PROBLEM FRAMING ═══════════ -->
+<section id="problem">
+<div class="container">
+  <h2>1. Problem Framing</h2>
+  <p>A retail client wants to identify high-income individuals for premium product targeting. Census data provides demographic and employment variables but no direct transaction data. Income above $50,000 serves as a <strong>proxy target</strong> — not the ultimate business objective.</p>
+
+  <div class="callout amber">
+    <strong>Income is a proxy</strong>
+    What the client actually cares about is purchasing power, product affinity, and propensity to respond. The &gt;$50K label is a useful first approximation, but a production system should validate against real business outcomes.
+  </div>
+
+  <h3>The Targeting Pipeline</h3>
+  <div class="flow">
+    <div class="flow-box">Census Data</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box highlight">Income Score</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box highlight">Threshold Policy</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">Segment ID</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">Marketing Action</div>
+  </div>
+  <p style="text-align:center; font-size:0.85rem; color:var(--muted);">The business decision happens at the threshold layer, not at the model output.</p>
+</div>
+</section>
+
+<!-- ═══════════ DATA ═══════════ -->
+<section id="data">
+<div class="container">
+  <h2>2. Data Understanding</h2>
+
+  <div class="card-row">
+    <div class="card"><div class="value">199,523</div><div class="label">Records</div></div>
+    <div class="card"><div class="value">42</div><div class="label">Columns</div></div>
+    <div class="card amber"><div class="value">6.2%</div><div class="label">Positive Class</div></div>
+    <div class="card"><div class="value">94 / 95</div><div class="label">Survey Years</div></div>
+  </div>
+
+  <h3>Target Imbalance</h3>
+  <p>The &gt;$50K class represents only 6.2% of records. A naive "predict everyone as &le;$50K" model achieves 93.8% accuracy — illustrating why accuracy is a misleading metric for this task.</p>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label">&le; $50K (93.8%)</div>
+      <div class="bar-track"><div class="bar-fill blue" style="width:93.8%">187,141</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">&gt; $50K (6.2%)</div>
+      <div class="bar-track"><div class="bar-fill amber" style="width:6.2%"></div></div>
+    </div>
+  </div>
+  <p style="font-size:0.85rem; color:var(--muted); margin-top:-8px;">12,382 positive-class records out of 199,523 total</p>
+
+  <h3>Key Data Characteristics</h3>
+  <table>
+    <tr><th>Characteristic</th><th>Detail</th></tr>
+    <tr><td>Sentinel values</td><td><code>Not in universe</code> appears in 15+ columns (50–99% of rows). Encodes life-stage status — preserved as explicit category, not treated as missing.</td></tr>
+    <tr><td>Unknown values</td><td><code>?</code> mapped to <code>Unknown</code> — ambiguity signal preserved.</td></tr>
+    <tr><td>Numeric-coded categoricals</td><td>5 columns (industry/occupation codes, veterans benefits, year) look numeric but are semantic codes — cast to string to prevent accidental continuous treatment.</td></tr>
+    <tr><td>Survey weight</td><td>CPS population weight (range 38–18,656). Used for evaluation and segment sizing, never as a feature.</td></tr>
+    <tr><td>Skewed financials</td><td>Capital gains, dividends, wage per hour: heavy zero-inflation and right skew. Log1p transforms available for linear models.</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- ═══════════ PREPROCESSING ═══════════ -->
+<section id="preprocessing">
+<div class="container">
+  <h2>3. Preprocessing &amp; Governance</h2>
+
+  <h3>Pipeline Flow</h3>
+  <div class="flow">
+    <div class="flow-box">JSONL Input</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">Target Map</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">Column Typing</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">Sentinel Handling</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box highlight">Stratified Split</div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">Train / Val / Test</div>
+  </div>
+
+  <h3>Key Governance Decisions</h3>
+  <table>
+    <tr><th>Decision</th><th>Choice</th><th>Rationale</th></tr>
+    <tr><td><code>weight</code> column</td><td>Excluded from features</td><td>Survey weight for population representativeness, not a predictor</td></tr>
+    <tr><td><code>Not in universe</code></td><td>Preserved as category</td><td>Encodes life-stage (children, retirees) — highly predictive</td></tr>
+    <tr><td>Numeric-coded columns</td><td>Cast to string</td><td>Prevents accidental mean/scaling on semantic codes</td></tr>
+    <tr><td>Train/Val/Test split</td><td>70/15/15, stratified on target</td><td>Preserves 6.2% positive rate across all splits</td></tr>
+    <tr><td>Encoder fitting</td><td>Train-only</td><td>Prevents data leakage from validation/test</td></tr>
+    <tr><td>Review columns (5)</td><td>Tested full vs reduced</td><td>92–99% sparse; reduced set performed equal or better</td></tr>
+  </table>
+
+  <div class="callout green">
+    <strong>Duplicate leakage audit</strong>
+    Checked before modeling: 1.6% exact duplicates (expected in census microdata), 89 conflicting-target groups (different people with identical demographics). Risk: LOW-MODERATE. No rows removed.
+  </div>
+</div>
+</section>
+
+<!-- ═══════════ CLASSIFICATION ═══════════ -->
+<section id="classification">
+<div class="container">
+  <h2>4. Classification Modeling</h2>
+
+  <h3>Stage 5: Baseline Comparison</h3>
+  <p>Eight configurations tested: 2 model families &times; 2 feature sets &times; 2 training modes.</p>
+  <table>
+    <tr><th>Configuration</th><th class="num">PR-AUC</th><th class="num">ROC-AUC</th><th class="num">F1 @0.5</th></tr>
+    <tr><td>LR / Full / NoClsBal</td><td class="num">0.5978</td><td class="num">0.9416</td><td class="num">0.4835</td></tr>
+    <tr><td>LR / Reduced / NoClsBal</td><td class="num">0.5976</td><td class="num">0.9416</td><td class="num">0.4835</td></tr>
+    <tr><td>CB / Full / NoClsBal</td><td class="num">0.6865</td><td class="num">0.9519</td><td class="num">0.5719</td></tr>
+    <tr class="highlight"><td><strong>CB / Reduced / NoClsBal</strong></td><td class="num"><strong>0.6877</strong></td><td class="num"><strong>0.9517</strong></td><td class="num"><strong>0.5714</strong></td></tr>
+    <tr><td>CB / Reduced / ClsBal</td><td class="num">0.6735</td><td class="num">0.9523</td><td class="num">0.4783</td></tr>
+  </table>
+  <p style="font-size:0.85rem; color:var(--muted);">CB = CatBoost, LR = Logistic Regression. ClsBal = class-balanced training. Validation metrics shown.</p>
+
+  <div class="callout">
+    <strong>Three key findings</strong>
+    CatBoost outperformed LR by <strong>+0.09 PR-AUC</strong>.
+    Reduced features &ge; Full (sparse columns add noise).
+    No-class-balancing outperformed class-balancing for PR-AUC.
+  </div>
+
+  <h3>Stage 6: Tuning &amp; Final Model</h3>
+  <p>27-configuration grid search (depth &times; learning_rate &times; l2_leaf_reg) with early stopping.</p>
+
+  <div class="card-row">
+    <div class="card green"><div class="value">0.7008</div><div class="label">Test PR-AUC</div></div>
+    <div class="card green"><div class="value">0.9565</div><div class="label">Test ROC-AUC</div></div>
+    <div class="card"><div class="value">0.6276</div><div class="label">Test F1 @t=0.25</div></div>
+    <div class="card"><div class="value">0.0311</div><div class="label">Brier Score</div></div>
+  </div>
+
+  <p><strong>Selected</strong>: depth=6, lr=0.08, l2_leaf_reg=1.0 (+0.0055 PR-AUC over Stage 5 baseline). Results consistent under survey-weighted evaluation.</p>
+
+  <h3>Threshold Policy</h3>
+  <p>The default 0.5 threshold wastes most of the model's value on this imbalanced task. Three operating modes give the business explicit control:</p>
+  <table>
+    <tr><th>Operating Mode</th><th>Threshold</th><th class="num">Precision</th><th class="num">Recall</th><th class="num">F1</th><th>Use Case</th></tr>
+    <tr><td>Precision-leaning</td><td>0.45</td><td class="num">0.726</td><td class="num">0.510</td><td class="num">0.599</td><td>Expensive 1:1 outreach</td></tr>
+    <tr class="highlight"><td><strong>Balanced</strong></td><td><strong>0.25</strong></td><td class="num"><strong>0.585</strong></td><td class="num"><strong>0.683</strong></td><td class="num"><strong>0.630</strong></td><td><strong>General targeting</strong></td></tr>
+    <tr><td>Recall-leaning</td><td>0.20</td><td class="num">0.532</td><td class="num">0.732</td><td class="num">0.616</td><td>Broad screening</td></tr>
+  </table>
+
+  <h3>Feature Importance</h3>
+  <div class="bar-chart">
+    <div class="bar-row"><div class="bar-label">family members under 18</div><div class="bar-track"><div class="bar-fill blue" style="width:100%">26.5</div></div></div>
+    <div class="bar-row"><div class="bar-label">age</div><div class="bar-track"><div class="bar-fill blue" style="width:78.8%">20.9</div></div></div>
+    <div class="bar-row"><div class="bar-label">veterans benefits</div><div class="bar-track"><div class="bar-fill blue" style="width:34.4%">9.1</div></div></div>
+    <div class="bar-row"><div class="bar-label">weeks worked in year</div><div class="bar-track"><div class="bar-fill blue" style="width:26.5%">7.0</div></div></div>
+    <div class="bar-row"><div class="bar-label">sex</div><div class="bar-track"><div class="bar-fill blue" style="width:19.3%">5.1</div></div></div>
+    <div class="bar-row"><div class="bar-label">education</div><div class="bar-track"><div class="bar-fill blue" style="width:14.9%">4.0</div></div></div>
+    <div class="bar-row"><div class="bar-label">capital gains</div><div class="bar-track"><div class="bar-fill blue" style="width:13.0%">3.4</div></div></div>
+    <div class="bar-row"><div class="bar-label">dividends from stocks</div><div class="bar-track"><div class="bar-fill blue" style="width:10.3%">2.7</div></div></div>
+  </div>
+  <p>The model relies on a diverse mix of human-capital, employment, and household signals — consistent with economic intuition. No suspicious single-feature dominance.</p>
+
+  <h3>Calibration</h3>
+  <p><strong>Not adopted.</strong> Brier score is already 0.031 (excellent). Neither isotonic (0.032) nor Platt scaling (0.034) improved it. Uncalibrated probabilities are well-calibrated across the full range.</p>
+</div>
+</section>
+
+<!-- ═══════════ SEGMENTATION ═══════════ -->
+<section id="segmentation">
+<div class="container">
+  <h2>5. Segmentation Modeling</h2>
+
+  <h3>Why Segment Beyond the Classifier?</h3>
+  <p>The classifier tells you <em>who is likely high-income</em>. It does not tell you <em>who these people are</em> or <em>how to approach them</em>. Segmentation provides the action-design layer that converts a statistical score into a marketing plan.</p>
+
+  <h3>Method Selection</h3>
+  <div class="flow">
+    <div class="flow-box">Mixed Data<br><span style="font-size:0.75rem;color:var(--muted)">24 cat + 7 num</span></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box highlight">K-Prototypes<br><span style="font-size:0.75rem;color:#fff">Cao init, &gamma;=0.5</span></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">k eval<br><span style="font-size:0.75rem;color:var(--muted)">k=3 stable</span></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">k=4 + absorb<br><span style="font-size:0.75rem;color:var(--muted)">&lt;2% &rarr; merge</span></div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box highlight">3 Segments</div>
+  </div>
+  <p style="font-size:0.85rem;color:var(--muted);text-align:center;">Fit on a random 30,000-row subsample (seed=42), assigned to all 199,523 rows. In evaluation outputs, k=3 was stable while k&ge;4 produced micro-clusters. To make outlier handling explicit, the clustering step requested k=4, which isolated a tiny micro-cluster (&lt;0.2%). A deterministic absorption rule then merged it into its nearest neighbor, producing the <strong style="color:var(--text);">final 3-segment solution</strong>.</p>
+
+  <div class="callout green">
+    <strong>Governance</strong>
+    Target (<code>_target</code>) was <strong>excluded</strong> from clustering input — used only after clustering for profiling.
+    Weight (<code>_weight</code>) was <strong>excluded</strong> from clustering input — used only for population-level segment sizing.
+  </div>
+
+  <h3>Final Segments</h3>
+  <div class="seg-cards">
+    <div class="seg-card" style="border-top: 4px solid #6366f1;">
+      <h4>Segment 0: Senior/Retired Householders</h4>
+      <div class="meta">20% of population &middot; 2.2% &gt;$50K &middot; 0.35&times; enrichment</div>
+      <ul>
+        <li>Mean age 63, mostly married, not in workforce</li>
+        <li>High school education dominant</li>
+        <li>~2 weeks/year worked</li>
+      </ul>
+      <p style="margin-top:12px;font-size:0.85rem;"><strong>Marketing</strong>: Retirement products, estate planning, Medicare supplements. Direct mail and phone channels.</p>
+    </div>
+    <div class="seg-card" style="border-top: 4px solid #f59e0b;">
+      <h4>Segment 1: Youth &amp; Dependents</h4>
+      <div class="meta">33% of population &middot; 0.05% &gt;$50K &middot; 0.01&times; enrichment</div>
+      <ul>
+        <li>Mean age 11, children and young dependents</li>
+        <li>Not in labor force</li>
+        <li>57% with both parents present</li>
+      </ul>
+      <p style="margin-top:12px;font-size:0.85rem;"><strong>Marketing</strong>: Family-indirect via parents/guardians. Youth savings, education products. Long-horizon relationship building.</p>
+    </div>
+    <div class="seg-card" style="border-top: 4px solid #059669;">
+      <h4>Segment 2: Mid-Career Working Householders</h4>
+      <div class="meta">47% of population &middot; 12.5% &gt;$50K &middot; 2.1&times; enrichment</div>
+      <ul>
+        <li>Mean age 39, primarily full-time employed</li>
+        <li>Majority married householders</li>
+        <li>~49 weeks/year worked</li>
+      </ul>
+      <p style="margin-top:12px;font-size:0.85rem;"><strong>Marketing</strong>: Premium financial products, investment accounts, wealth management. Digital and advisor channels.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════ INTEGRATED STRATEGY ═══════════ -->
+<section id="strategy">
+<div class="container">
+  <h2>6. Integrated Targeting Strategy</h2>
+
+  <h3>The Two-Layer Model</h3>
+  <table>
+    <tr><th>Layer</th><th>What It Does</th><th>Question It Answers</th></tr>
+    <tr><td><strong>Classifier</strong></td><td>Scores each person by income likelihood (0–1)</td><td><em>Who should we prioritize?</em></td></tr>
+    <tr><td><strong>Threshold Policy</strong></td><td>Converts score into a targeting decision</td><td><em>Where do we draw the line?</em></td></tr>
+    <tr><td><strong>Segmentation</strong></td><td>Groups people by life-stage and household type</td><td><em>How should we approach them?</em></td></tr>
+  </table>
+
+  <h3>Example Operational Workflows</h3>
+
+  <div class="callout">
+    <strong>Scenario 1: Premium credit card launch (budget-constrained)</strong>
+    Use <strong>precision-leaning threshold (0.45)</strong>. Contact only the highest-confidence prospects.
+    Within that group, customize messaging by segment: investment language for Segment 2, retirement messaging for Segment 0.
+  </div>
+
+  <div class="callout">
+    <strong>Scenario 2: Financial literacy campaign (broad reach)</strong>
+    Use <strong>recall-leaning threshold (0.20)</strong>. Cast a wide net to find as many high-income individuals as possible.
+    Segment determines channel: digital for Segment 2, community events for Segment 0, family-targeted for Segment 1.
+  </div>
+
+  <div class="callout">
+    <strong>Scenario 3: Market sizing (no outreach needed)</strong>
+    Use <strong>segmentation alone</strong>. Report weighted population shares to size market opportunity by life-stage group. The classifier's probability score provides a continuous dimension for sub-targeting within the large working-age segment.
+  </div>
+</div>
+</section>
+
+<!-- ═══════════ KEY INSIGHTS ═══════════ -->
+<section id="insights">
+<div class="container">
+  <h2>7. Key Insights</h2>
+
+  <div class="callout amber">
+    <strong>1. Threshold is a business policy, not a model parameter</strong>
+    The model's ranking quality (PR-AUC 0.70) is constant. What changes with threshold is the precision–recall tradeoff. The business should choose which error is more costly: missing a high-income person, or wasting outreach on someone who isn't.
+  </div>
+
+  <div class="callout amber">
+    <strong>2. Marginal cases are where the value concentrates</strong>
+    People far from the decision boundary are easy calls. The hard — and most business-relevant — decisions are about individuals the model scores near the threshold. A hard 0/1 label hides this nuance; a score with policy preserves it.
+  </div>
+
+  <div class="callout amber">
+    <strong>3. Income is a proxy target</strong>
+    The &gt;$50K label approximates purchasing power but is not what a retail client ultimately optimizes for. In production, validate against response rates, conversion, or lifetime value — not just income classification accuracy.
+  </div>
+
+  <div class="callout amber">
+    <strong>4. Segmentation converts score into action</strong>
+    A probability score alone doesn't tell a campaign manager what creative to use or what product to offer. Segments provide the "who are these people" context that makes the score actionable.
+  </div>
+
+  <div class="callout amber">
+    <strong>5. Governance and interpretability beat complexity</strong>
+    The reduced feature set outperformed the full set. Calibration wasn't needed. The 3-segment solution is more useful than a 7-cluster one with micro-groups. At every stage, simpler and more auditable won.
+  </div>
+</div>
+</section>
+
+<!-- ═══════════ LIMITATIONS ═══════════ -->
+<section id="limitations">
+<div class="container">
+  <h2>8. Limitations &amp; Next Steps</h2>
+
+  <h3>Limitations</h3>
+  <table>
+    <tr><th>Limitation</th><th>Impact</th></tr>
+    <tr><td>Historical data (1994–1995)</td><td>Demographics and income distributions have shifted. Model demonstrates methodology, not production readiness.</td></tr>
+    <tr><td>Income as proxy target</td><td>Real-world targeting should validate against business outcomes (response, conversion, LTV).</td></tr>
+    <tr><td>Segmentation is a lens</td><td>K-Prototypes with different parameters or features would produce different valid segments.</td></tr>
+    <tr><td>No external validation</td><td>All evaluation is within the CPS dataset; no holdout from a different source.</td></tr>
+    <tr><td>Single random seed</td><td>All experiments use seed=42. Multi-seed robustness not formally tested.</td></tr>
+  </table>
+
+  <h3>Recommended Next Steps</h3>
+  <table>
+    <tr><th>#</th><th>Action</th><th>Why</th></tr>
+    <tr><td>1</td><td>Validate against real business outcomes</td><td>Replace income proxy with response/conversion data</td></tr>
+    <tr><td>2</td><td>Refresh with current data</td><td>1994 demographics don't reflect today's population</td></tr>
+    <tr><td>3</td><td>Sub-segment working-age group</td><td>47% of population; classifier score gives continuous sub-targeting</td></tr>
+    <tr><td>4</td><td>Build a response/propensity model</td><td>More directly actionable than income classification</td></tr>
+    <tr><td>5</td><td>Operationalize threshold selection</td><td>Give campaign managers a tool to choose their operating point</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- ═══════════ REFERENCES ═══════════ -->
+<section id="references">
+<div class="container">
+  <h2>References</h2>
+  <ol style="font-size:0.9rem; line-height: 1.9;">
+    <li>Dorogush, A.V., Ershov, V., &amp; Gulin, A. (2018). CatBoost: gradient boosting with categorical features support. <em>arXiv:1810.11363</em>.</li>
+    <li>Pedregosa, F. et al. (2011). Scikit-learn: Machine Learning in Python. <em>JMLR</em>, 12, 2825–2830.</li>
+    <li>de Vos, N.J. (2015). kmodes: Python implementation of k-modes and k-prototypes clustering. github.com/nicodv/kmodes.</li>
+    <li>Huang, Z. (1998). Extensions to the k-means algorithm for clustering large data sets with categorical values. <em>Data Mining and Knowledge Discovery</em>, 2(3), 283–304.</li>
+    <li>U.S. Census Bureau / Bureau of Labor Statistics. Current Population Survey (CPS), March Supplement, 1994–1995.</li>
+    <li>Lundberg, S.M. &amp; Lee, S.-I. (2017). A Unified Approach to Interpreting Model Predictions. <em>NeurIPS</em>.</li>
+  </ol>
+</div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer style="text-align:center; padding:32px 0; font-size:0.8rem; color:var(--muted); border-top:1px solid var(--border);">
+  Census Income Classification &amp; Marketing Segmentation &mdash; ML Take-Home Project
+</footer>
+
+</body>
+</html>

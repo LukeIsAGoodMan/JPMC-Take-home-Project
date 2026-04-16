@@ -1,0 +1,179 @@
+{
+  "dataset_name": "census_bureau",
+  "n_columns": 42,
+  "target_column": "label",
+  "columns": [
+    {
+      "name": "age",
+      "type": "raw_string"
+    },
+    {
+      "name": "class of worker",
+      "type": "raw_string"
+    },
+    {
+      "name": "detailed industry recode",
+      "type": "raw_string"
+    },
+    {
+      "name": "detailed occupation recode",
+      "type": "raw_string"
+    },
+    {
+      "name": "education",
+      "type": "raw_string"
+    },
+    {
+      "name": "wage per hour",
+      "type": "raw_string"
+    },
+    {
+      "name": "enroll in edu inst last wk",
+      "type": "raw_string"
+    },
+    {
+      "name": "marital stat",
+      "type": "raw_string"
+    },
+    {
+      "name": "major industry code",
+      "type": "raw_string"
+    },
+    {
+      "name": "major occupation code",
+      "type": "raw_string"
+    },
+    {
+      "name": "race",
+      "type": "raw_string"
+    },
+    {
+      "name": "hispanic origin",
+      "type": "raw_string"
+    },
+    {
+      "name": "sex",
+      "type": "raw_string"
+    },
+    {
+      "name": "member of a labor union",
+      "type": "raw_string"
+    },
+    {
+      "name": "reason for unemployment",
+      "type": "raw_string"
+    },
+    {
+      "name": "full or part time employment stat",
+      "type": "raw_string"
+    },
+    {
+      "name": "capital gains",
+      "type": "raw_string"
+    },
+    {
+      "name": "capital losses",
+      "type": "raw_string"
+    },
+    {
+      "name": "dividends from stocks",
+      "type": "raw_string"
+    },
+    {
+      "name": "tax filer stat",
+      "type": "raw_string"
+    },
+    {
+      "name": "region of previous residence",
+      "type": "raw_string"
+    },
+    {
+      "name": "state of previous residence",
+      "type": "raw_string"
+    },
+    {
+      "name": "detailed household and family stat",
+      "type": "raw_string"
+    },
+    {
+      "name": "detailed household summary in household",
+      "type": "raw_string"
+    },
+    {
+      "name": "weight",
+      "type": "raw_string"
+    },
+    {
+      "name": "migration code-change in msa",
+      "type": "raw_string"
+    },
+    {
+      "name": "migration code-change in reg",
+      "type": "raw_string"
+    },
+    {
+      "name": "migration code-move within reg",
+      "type": "raw_string"
+    },
+    {
+      "name": "live in this house 1 year ago",
+      "type": "raw_string"
+    },
+    {
+      "name": "migration prev res in sunbelt",
+      "type": "raw_string"
+    },
+    {
+      "name": "num persons worked for employer",
+      "type": "raw_string"
+    },
+    {
+      "name": "family members under 18",
+      "type": "raw_string"
+    },
+    {
+      "name": "country of birth father",
+      "type": "raw_string"
+    },
+    {
+      "name": "country of birth mother",
+      "type": "raw_string"
+    },
+    {
+      "name": "country of birth self",
+      "type": "raw_string"
+    },
+    {
+      "name": "citizenship",
+      "type": "raw_string"
+    },
+    {
+      "name": "own business or self employed",
+      "type": "raw_string"
+    },
+    {
+      "name": "fill inc questionnaire for veteran's admin",
+      "type": "raw_string"
+    },
+    {
+      "name": "veterans benefits",
+      "type": "raw_string"
+    },
+    {
+      "name": "weeks worked in year",
+      "type": "raw_string"
+    },
+    {
+      "name": "year",
+      "type": "raw_string"
+    },
+    {
+      "name": "label",
+      "type": "raw_string"
+    }
+  ],
+  "notes": [
+    "All fields preserved as raw strings for lossless conversion.",
+    "Special values such as '?', 'Not in universe', '- 50000.', and '50000+.' are retained exactly as-is."
+  ]
+}
