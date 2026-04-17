@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Working-Age Sub-Segments (Exact V1 Lineage) — V2</title>
+<style>
+  :root { --text:#1a1a2e; --muted:#64748b; --border:#e2e8f0; --bg:#fafafa;
+          --blue:#2563eb; --green:#059669; --amber:#d97706; --purple:#6366f1; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; color:var(--text);
+         background:var(--bg); line-height:1.6; max-width:820px; margin:0 auto; padding:32px 24px; }
+  h1 { font-size:1.6rem; font-weight:800; margin-bottom:4px; }
+  .sub { color:var(--muted); margin-bottom:20px; font-size:0.9rem; }
+  .badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:600; }
+  .badge.adopted { background:#d1fae5; color:var(--green); }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:0.9rem; }
+  th { background:#f1f5f9; padding:8px 12px; text-align:left; font-size:0.8rem;
+       text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); border-bottom:2px solid var(--border); }
+  td { padding:8px 12px; border-bottom:1px solid var(--border); }
+  .num { text-align:right; font-family:monospace; }
+  .card { border:1px solid var(--border); border-radius:12px; padding:20px; margin:16px 0; background:#fff; }
+  .card h2 { font-size:1.05rem; margin-bottom:4px; }
+  .card .meta { font-size:0.85rem; color:var(--muted); margin-bottom:10px; }
+  .card ul { padding-left:18px; font-size:0.88rem; }
+  .card ul li { margin-bottom:3px; }
+  .action { margin-top:10px; padding:10px; background:#f8fafc; border-radius:8px; font-size:0.85rem; }
+  .arch { background:#f1f5f9; border-radius:8px; padding:14px; margin:16px 0;
+          font-family:monospace; font-size:0.82rem; line-height:1.8; white-space:pre; }
+  .note { font-size:0.8rem; color:var(--muted); margin-top:20px; padding-top:12px; border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<h1>Working-Age Sub-Segments <span class="badge adopted">Conditionally Adopted</span></h1>
+<p class="sub">Second-pass K-Prototypes on exact V1 Segment 2 (91,443 rows). Target and weight excluded from clustering.</p>
+
+<table>
+  <tr><th>Sub</th><th>Name</th><th class="num">N</th><th class="num">% of Seg 2</th><th class="num">&gt;50K</th><th class="num">Enrich</th></tr>
+  <tr><td>0</td><td>Established Mid-Career Earners</td><td class="num">34,904</td><td class="num">38.2%</td><td class="num">20.7%</td><td class="num">1.65x</td></tr>
+  <tr><td>1</td><td>Lower-Income Service Workers</td><td class="num">10,239</td><td class="num">11.2%</td><td class="num">2.4%</td><td class="num">0.19x</td></tr>
+  <tr><td>2</td><td>Younger Mainstream Workers</td><td class="num">46,300</td><td class="num">50.6%</td><td class="num">8.6%</td><td class="num">0.69x</td></tr>
+</table>
+
+<div class="card" style="border-top:4px solid var(--green);">
+  <h2>Sub-0: Established Mid-Career Earners</h2>
+  <div class="meta">38.2% of working-age &middot; 20.7% &gt;$50K &middot; 1.65x enrichment</div>
+  <ul>
+    <li>Mean age <strong>51.5</strong>; married 74%</li>
+    <li>Exec/managerial 19%, professional 16%, admin 13%</li>
+    <li>HS grad 33%, some college 18%, bachelor's 17%</li>
+  </ul>
+  <div class="action"><strong>Marketing:</strong> Primary premium segment. Investment, retirement planning, wealth management. Highest income concentration in the entire population.</div>
+</div>
+
+<div class="card" style="border-top:4px solid var(--amber);">
+  <h2>Sub-1: Lower-Income Service Workers</h2>
+  <div class="meta">11.2% of working-age &middot; 2.4% &gt;$50K &middot; 0.19x enrichment</div>
+  <ul>
+    <li>Mean age <strong>33.6</strong>; female 56%; never married 32%</li>
+    <li>Other service 17%, admin 15%, professional 13%</li>
+    <li>HS grad 35%, some college 22%</li>
+  </ul>
+  <div class="action"><strong>Marketing:</strong> Accessible products, basic banking. Low premium-targeting value. Most stable sub-segment across seeds.</div>
+</div>
+
+<div class="card" style="border-top:4px solid var(--blue);">
+  <h2>Sub-2: Younger Mainstream Workers</h2>
+  <div class="meta">50.6% of working-age &middot; 8.6% &gt;$50K &middot; 0.69x enrichment</div>
+  <ul>
+    <li>Mean age <strong>31.1</strong>; married 55%; never married 33%</li>
+    <li>Admin 17%, professional 13%, precision production 11%</li>
+    <li>HS grad 34%, some college 22%, bachelor's 18%</li>
+  </ul>
+  <div class="action"><strong>Marketing:</strong> Growth segment. Career-stage offers, mortgage, starter investment. Classifier score provides continuous sub-prioritization.</div>
+</div>
+
+<h2 style="font-size:1rem; margin-top:20px;">Full Architecture</h2>
+<div class="arch">Population (199,523)
+  ├── Seniors (40,618, 20%)           → retirement
+  ├── Youth (67,462, 34%)             → family-indirect
+  └── Working-Age (91,443, 46%)
+        ├── Established Earners (35K, 38%)  → premium
+        ├── Service Workers (10K, 11%)      → accessible
+        └── Younger Workers (46K, 51%)      → growth</div>
+
+<p class="note">
+  <strong>Conditionally adopted.</strong> Based on exact V1 Segment 2 population. 3 of 4 seeds produce this 3-segment structure; the service-worker group is the most stable finding. Sub-segment boundaries should be treated as directional, not precise. Classifier score remains the primary individual-level targeting dimension.
+</p>
+</body>
+</html>

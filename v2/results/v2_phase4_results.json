@@ -1,0 +1,156 @@
+{
+  "weighted_training": {
+    "baseline_no_weight": {
+      "val_uw": {
+        "roc_auc": 0.9534,
+        "pr_auc": 0.6932,
+        "f1": 0.6299,
+        "precision": 0.5846,
+        "recall": 0.6828,
+        "brier": 0.0315
+      },
+      "val_sw": {
+        "roc_auc": 0.9524,
+        "pr_auc": 0.6906,
+        "f1": 0.6295,
+        "precision": 0.5863,
+        "recall": 0.6795,
+        "brier": 0.0325
+      },
+      "test_uw": {
+        "roc_auc": 0.9565,
+        "pr_auc": 0.7008,
+        "f1": 0.6276,
+        "precision": 0.5822,
+        "recall": 0.6807,
+        "brier": 0.0311
+      }
+    },
+    "normalized": {
+      "val_uw": {
+        "roc_auc": 0.9528,
+        "pr_auc": 0.6896,
+        "f1": 0.6272,
+        "precision": 0.5762,
+        "recall": 0.6882,
+        "brier": 0.0316
+      },
+      "val_sw": {
+        "roc_auc": 0.9521,
+        "pr_auc": 0.6881,
+        "f1": 0.6265,
+        "precision": 0.5772,
+        "recall": 0.6849,
+        "brier": 0.0325
+      }
+    },
+    "sqrt": {
+      "val_uw": {
+        "roc_auc": 0.9524,
+        "pr_auc": 0.6887,
+        "f1": 0.6279,
+        "precision": 0.5785,
+        "recall": 0.6866,
+        "brier": 0.0317
+      },
+      "val_sw": {
+        "roc_auc": 0.9516,
+        "pr_auc": 0.6859,
+        "f1": 0.6287,
+        "precision": 0.5821,
+        "recall": 0.6833,
+        "brier": 0.0327
+      }
+    },
+    "capped_p99": {
+      "val_uw": {
+        "roc_auc": 0.9526,
+        "pr_auc": 0.6876,
+        "f1": 0.6285,
+        "precision": 0.5764,
+        "recall": 0.6909,
+        "brier": 0.0317
+      },
+      "val_sw": {
+        "roc_auc": 0.9518,
+        "pr_auc": 0.686,
+        "f1": 0.6314,
+        "precision": 0.5827,
+        "recall": 0.6889,
+        "brier": 0.0327
+      }
+    }
+  },
+  "benchmark": {
+    "CatBoost (accepted)": {
+      "val_uw": {
+        "roc_auc": 0.9534,
+        "pr_auc": 0.6932,
+        "f1": 0.6299,
+        "precision": 0.5846,
+        "recall": 0.6828,
+        "brier": 0.0315
+      },
+      "val_sw": {
+        "roc_auc": 0.9524,
+        "pr_auc": 0.6906,
+        "f1": 0.6295,
+        "precision": 0.5863,
+        "recall": 0.6795,
+        "brier": 0.0325
+      },
+      "test_uw": {
+        "roc_auc": 0.9565,
+        "pr_auc": 0.7008,
+        "f1": 0.6276,
+        "precision": 0.5822,
+        "recall": 0.6807,
+        "brier": 0.0311
+      }
+    },
+    "LightGBM": {
+      "val_uw": {
+        "roc_auc": 0.9512,
+        "pr_auc": 0.6839,
+        "f1": 0.6253,
+        "precision": 0.5883,
+        "recall": 0.6672,
+        "brier": 0.032
+      },
+      "val_sw": {
+        "roc_auc": 0.9494,
+        "pr_auc": 0.6824,
+        "f1": 0.6255,
+        "precision": 0.5884,
+        "recall": 0.6677,
+        "brier": 0.0329
+      },
+      "test_uw": {
+        "roc_auc": 0.9551,
+        "pr_auc": 0.6917,
+        "f1": 0.6235,
+        "precision": 0.5783,
+        "recall": 0.6764,
+        "brier": 0.0316
+      }
+    },
+    "XGBoost": {
+      "val_uw": {
+        "roc_auc": 0.951,
+        "pr_auc": 0.6829,
+        "f1": 0.6274,
+        "precision": 0.5891,
+        "recall": 0.671,
+        "brier": 0.032
+      },
+      "val_sw": {
+        "roc_auc": 0.9493,
+        "pr_auc": 0.6817,
+        "f1": 0.6251,
+        "precision": 0.588,
+        "recall": 0.6672,
+        "brier": 0.033
+      }
+    }
+  }
+}

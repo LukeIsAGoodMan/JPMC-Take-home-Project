@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V2 Report — Decision-Driven Upgrade</title>
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --text:#1a1a2e; --muted:#64748b;
+    --accent:#2563eb; --accent-light:#dbeafe; --accent-dark:#1e40af;
+    --green:#059669; --green-bg:#d1fae5; --amber:#d97706; --amber-bg:#fef3c7;
+    --red:#dc2626; --border:#e2e8f0;
+    --font:'Segoe UI',system-ui,sans-serif; --mono:'Cascadia Code',monospace; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.7;font-size:16px}
+  .container{max-width:920px;margin:0 auto;padding:0 24px}
+  section{padding:40px 0;border-bottom:1px solid var(--border)}
+  section:last-of-type{border-bottom:none}
+  h1{font-size:2.2rem;font-weight:800;letter-spacing:-0.02em}
+  h2{font-size:1.4rem;font-weight:700;color:var(--accent-dark);border-bottom:3px solid var(--accent);
+     padding-bottom:6px;display:inline-block;margin-bottom:14px}
+  h3{font-size:1.05rem;font-weight:600;margin:20px 0 8px}
+  p{margin-bottom:12px}
+  .sub{font-size:1rem;color:var(--muted);margin-top:6px}
+  .cover{text-align:center;padding:64px 0 40px;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:#fff;border-bottom:none}
+  .cover h1{color:#fff;font-size:2.4rem}
+  .cover .sub{color:rgba(255,255,255,0.75)}
+  .badge{display:inline-block;border-radius:20px;padding:3px 14px;font-size:0.75rem;font-weight:600}
+  .badge.adopted{background:var(--green-bg);color:var(--green)}
+  .badge.tested{background:var(--amber-bg);color:var(--amber)}
+  .badge.frozen{background:#e2e8f0;color:var(--muted)}
+  nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:10px 0}
+  nav .container{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+  nav a{font-size:0.78rem;color:var(--accent);text-decoration:none;padding:3px 10px;border-radius:4px}
+  nav a:hover{background:var(--accent-light)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+  .card .val{font-size:1.8rem;font-weight:800;color:var(--accent-dark)}
+  .card .lbl{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:2px}
+  .card.g .val{color:var(--green)}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.88rem}
+  th{background:#f1f5f9;font-weight:600;text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);
+     font-size:0.78rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted)}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  .n{text-align:right;font-family:var(--mono);font-size:0.84rem}
+  tr.hl td{background:var(--accent-light);font-weight:600}
+  .callout{border-left:4px solid var(--accent);background:var(--accent-light);
+    padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .callout.g{border-color:var(--green);background:var(--green-bg)}
+  .callout.a{border-color:var(--amber);background:var(--amber-bg)}
+  .callout strong{display:block;margin-bottom:3px}
+  .flow{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin:14px 0}
+  .fb{background:var(--surface);border:2px solid var(--accent);border-radius:8px;padding:10px 14px;
+      font-weight:600;font-size:0.82rem;white-space:nowrap}
+  .fb.hl{background:var(--accent);color:#fff}
+  .fa{font-size:1.2rem;color:var(--accent);padding:0 5px}
+  .seg{border:1px solid var(--border);border-radius:10px;padding:16px;background:var(--surface);margin:8px 0}
+  .seg h4{font-size:0.95rem;margin-bottom:4px}
+  .seg .meta{font-size:0.82rem;color:var(--muted);margin-bottom:8px}
+  .seg ul{font-size:0.85rem;padding-left:16px}
+  .seg ul li{margin-bottom:2px}
+  .arch{background:#f1f5f9;border-radius:8px;padding:14px;font-family:var(--mono);
+    font-size:0.8rem;line-height:1.7;white-space:pre;margin:14px 0}
+  @media print{nav{display:none}.cover{background:#0f2027!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+
+<section class="cover">
+<div class="container">
+  <h1>V2: Decision-Driven Upgrade</h1>
+  <p class="sub">From proxy classifier to operational targeting system</p>
+  <p style="margin-top:16px;font-size:0.85rem;opacity:0.7">Built on frozen V1 baseline &middot; CPS Census 1994-1995 &middot; 199,523 records</p>
+</div>
+</section>
+
+<nav><div class="container">
+  <a href="#why">Why V2</a> <a href="#target">Target</a> <a href="#score">Score Bands</a>
+  <a href="#layer2">Layer 2</a> <a href="#bench">Benchmark</a> <a href="#arch">Architecture</a>
+  <a href="#gov">Governance</a>
+</div></nav>
+
+<!-- WHY V2 -->
+<section id="why">
+<div class="container">
+  <h2>Why V2 Was Needed</h2>
+  <p>V1 proved a sound two-layer methodology: CatBoost classifier (PR-AUC 0.70) + 3-segment K-Prototypes. V2 addresses three structural limitations:</p>
+  <div class="cards">
+    <div class="card"><div class="val" style="font-size:1.2rem">Proxy Target</div><div class="lbl">V1 treats income &gt;50K as the only framing</div></div>
+    <div class="card"><div class="val" style="font-size:1.2rem">3 Fixed Modes</div><div class="lbl">V1 thresholds are metric-driven, not budget-driven</div></div>
+    <div class="card"><div class="val" style="font-size:1.2rem">47% Segment</div><div class="lbl">V1 working-age macro segment is too broad</div></div>
+  </div>
+  <p>V2 adds a target hierarchy, budget-aware score bands, exact-lineage Layer 2 sub-segmentation, and optional extension validation — all without changing V1.</p>
+</div>
+</section>
+
+<!-- TARGET HIERARCHY -->
+<section id="target">
+<div class="container">
+  <h2>Target Hierarchy</h2>
+  <table>
+    <tr><th>Tier</th><th>Target</th><th>Available?</th><th>Status</th></tr>
+    <tr class="hl"><td>0</td><td>Binary income &gt;$50K</td><td>Yes</td><td><span class="badge frozen">V1 Baseline</span></td></tr>
+    <tr><td>1</td><td>Composite affluence / financial-activity indicator</td><td>Constructible</td><td><span class="badge tested">Designed</span></td></tr>
+    <tr><td>2</td><td>Response propensity / conversion / CLV</td><td>No (needs business data)</td><td>Future</td></tr>
+    <tr><td>3</td><td>E[value] = P(response) &times; E[revenue]</td><td>No</td><td>Ideal</td></tr>
+  </table>
+  <div class="callout a"><strong>Key insight</strong>The biggest improvement opportunity is better targets, not better algorithms. V1's classifier is already strong (PR-AUC 0.70). Moving from Tier 0 to Tier 2 would be more impactful than any model-level tuning.</div>
+</div>
+</section>
+
+<!-- SCORE BANDS -->
+<section id="score">
+<div class="container">
+  <h2>Score-Band Analysis</h2>
+  <p>V2 replaces V1's 3 fixed thresholds with empirical score bands:</p>
+  <table>
+    <tr><th>Band</th><th>Score</th><th class="n">N</th><th class="n">% Pop</th><th class="n">Positives</th><th class="n">Precision</th></tr>
+    <tr><td>A: Very High</td><td>&ge;0.50</td><td class="n">1,133</td><td class="n">3.8%</td><td class="n">876</td><td class="n">77.3%</td></tr>
+    <tr><td>B: High</td><td>0.30–0.50</td><td class="n">739</td><td class="n">2.5%</td><td class="n">298</td><td class="n">40.3%</td></tr>
+    <tr style="background:var(--amber-bg)"><td><strong>C: Marginal</strong></td><td>0.15–0.30</td><td class="n">1,209</td><td class="n">4.0%</td><td class="n">277</td><td class="n">22.9%</td></tr>
+    <tr><td>D: Low</td><td>0.05–0.15</td><td class="n">2,672</td><td class="n">8.9%</td><td class="n">230</td><td class="n">8.6%</td></tr>
+    <tr><td>E: Very Low</td><td>&lt;0.05</td><td class="n">24,176</td><td class="n">80.8%</td><td class="n">176</td><td class="n">0.7%</td></tr>
+  </table>
+  <p><strong>Band C is the decision zone.</strong> 81% of the population is confidently non-target (Band E). Bands A+B capture 63% of positives in 6.3% of population. Band C is where budget, capacity, and segment context determine the targeting decision.</p>
+
+  <h3>Budget Knee</h3>
+  <table>
+    <tr><th class="n">Top K</th><th class="n">TP</th><th class="n">Precision</th><th class="n">Recall</th></tr>
+    <tr><td class="n">500</td><td class="n">463</td><td class="n">92.6%</td><td class="n">24.9%</td></tr>
+    <tr><td class="n">1,000</td><td class="n">798</td><td class="n">79.8%</td><td class="n">43.0%</td></tr>
+    <tr style="background:var(--green-bg)"><td class="n"><strong>1,500</strong></td><td class="n"><strong>1,036</strong></td><td class="n"><strong>69.1%</strong></td><td class="n"><strong>55.8%</strong></td></tr>
+    <tr><td class="n">2,000</td><td class="n">1,214</td><td class="n">60.7%</td><td class="n">65.4%</td></tr>
+    <tr><td class="n">5,000</td><td class="n">1,639</td><td class="n">32.8%</td><td class="n">88.3%</td></tr>
+  </table>
+  <p style="font-size:0.85rem;color:var(--muted)">Budget knee at ~1,500-2,000 contacts. Marginal TP per contact drops from 0.93 (first 500) to 0.10 (3,000-5,000).</p>
+</div>
+</section>
+
+<!-- LAYER 2 -->
+<section id="layer2">
+<div class="container">
+  <h2>Layer 2: Working-Age Sub-Segments</h2>
+  <p><span class="badge adopted">Conditionally Adopted</span> — Run on exact V1 Segment 2 (91,443 rows). Lineage verified.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:16px 0">
+    <div class="seg" style="border-top:4px solid var(--green)">
+      <h4>Established Earners</h4>
+      <div class="meta">38% of WA &middot; 20.7% &gt;50K &middot; 1.65x</div>
+      <ul><li>Mean age 51.5, married 74%</li><li>Exec/managerial 19%, professional 16%</li></ul>
+    </div>
+    <div class="seg" style="border-top:4px solid var(--amber)">
+      <h4>Service Workers</h4>
+      <div class="meta">11% of WA &middot; 2.4% &gt;50K &middot; 0.19x</div>
+      <ul><li>Mean age 33.6, female 56%</li><li>Other service 17%, admin 15%</li></ul>
+    </div>
+    <div class="seg" style="border-top:4px solid var(--accent)">
+      <h4>Younger Workers</h4>
+      <div class="meta">51% of WA &middot; 8.6% &gt;50K &middot; 0.69x</div>
+      <ul><li>Mean age 31.1, mixed occupations</li><li>Bachelor's 18%, precision prod 11%</li></ul>
+    </div>
+  </div>
+
+  <div class="callout g"><strong>9x income-rate differential</strong>Within the V1 working-age macro segment, income rate ranges from 2.4% (service workers) to 20.7% (established earners). The macro segment was hiding significant internal heterogeneity.</div>
+
+  <h3>Full Architecture</h3>
+  <div class="arch">Population (199,523)
+  ├── Seniors (40,618, 20%)            → retirement
+  ├── Youth (67,462, 34%)              → family-indirect
+  └── Working-Age (91,443, 46%)
+        ├── Established Earners (35K)   → premium targeting
+        ├── Service Workers (10K)       → accessible products
+        └── Younger Workers (46K)       → growth / mid-tier</div>
+
+  <p style="font-size:0.85rem;color:var(--muted)">Stability: 3/4 seeds produce 3 sub-segments. Service-worker group is most robust. Boundaries are directional.</p>
+</div>
+</section>
+
+<!-- BENCHMARK -->
+<section id="bench">
+<div class="container">
+  <h2>Optional Extensions</h2>
+  <h3>Weighted Training</h3>
+  <table>
+    <tr><th>Variant</th><th class="n">PR-AUC</th><th class="n">vs Baseline</th><th>Decision</th></tr>
+    <tr class="hl"><td>Baseline (no weight)</td><td class="n">0.6932</td><td class="n">—</td><td><span class="badge adopted">Accepted</span></td></tr>
+    <tr><td>Normalized</td><td class="n">0.6896</td><td class="n">-0.0036</td><td><span class="badge tested">Not adopted</span></td></tr>
+    <tr><td>Sqrt</td><td class="n">0.6887</td><td class="n">-0.0045</td><td><span class="badge tested">Not adopted</span></td></tr>
+    <tr><td>Capped p99</td><td class="n">0.6876</td><td class="n">-0.0056</td><td><span class="badge tested">Not adopted</span></td></tr>
+  </table>
+
+  <h3>Classifier Benchmark</h3>
+  <table>
+    <tr><th>Model</th><th class="n">Val PR-AUC</th><th class="n">Test PR-AUC</th><th>Decision</th></tr>
+    <tr class="hl"><td>CatBoost</td><td class="n">0.6932</td><td class="n">0.7008</td><td><span class="badge adopted">Retained</span></td></tr>
+    <tr><td>LightGBM</td><td class="n">0.6839</td><td class="n">0.6917</td><td><span class="badge tested">Not adopted</span></td></tr>
+    <tr><td>XGBoost</td><td class="n">0.6829</td><td class="n">—</td><td><span class="badge tested">Not adopted</span></td></tr>
+  </table>
+  <p>CatBoost's native categorical handling gives it a structural advantage on this high-categorical dataset. No displacement.</p>
+</div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="arch">
+<div class="container">
+  <h2>Final V2 Architecture</h2>
+  <div class="flow">
+    <div class="fb">Census Data</div><div class="fa">&rarr;</div>
+    <div class="fb hl">CatBoost Score</div><div class="fa">&rarr;</div>
+    <div class="fb hl">Score Band</div><div class="fa">&rarr;</div>
+    <div class="fb">Budget/Capacity Gate</div><div class="fa">&rarr;</div>
+    <div class="fb hl">Segment</div><div class="fa">&rarr;</div>
+    <div class="fb">Marketing Action</div>
+  </div>
+  <div class="cards" style="margin-top:20px">
+    <div class="card g"><div class="val">0.70</div><div class="lbl">Test PR-AUC</div></div>
+    <div class="card g"><div class="val">0.96</div><div class="lbl">Test ROC-AUC</div></div>
+    <div class="card"><div class="val">5</div><div class="lbl">Score Bands</div></div>
+    <div class="card"><div class="val">3+3</div><div class="lbl">Macro + Micro Segs</div></div>
+  </div>
+</div>
+</section>
+
+<!-- GOVERNANCE -->
+<section id="gov">
+<div class="container">
+  <h2>Governance Summary</h2>
+  <table>
+    <tr><th>Concern</th><th>Status</th></tr>
+    <tr><td>Weight excluded from features</td><td>Verified across all stages</td></tr>
+    <tr><td>Target excluded from clustering</td><td>Verified — profiling only</td></tr>
+    <tr><td>Survey-weighted evaluation</td><td>All metrics reported under both regimes</td></tr>
+    <tr><td>Numeric-coded categoricals</td><td>5 columns cast to string; never treated as continuous</td></tr>
+    <tr><td>Calibration</td><td>Assessed, not needed (Brier 0.031)</td></tr>
+    <tr><td>Fairness</td><td>Demographic features documented; governance note provided</td></tr>
+    <tr><td>Layer 2 lineage</td><td>Exact V1 labels recovered and verified</td></tr>
+    <tr><td>Layer 2 stability</td><td>3/4 seeds stable; caveat documented</td></tr>
+    <tr><td>Classifier diagnostics</td><td>PR-AUC by segment (rules-based assignment, caveat noted)</td></tr>
+  </table>
+</div>
+</section>
+
+<footer style="text-align:center;padding:24px 0;font-size:0.78rem;color:var(--muted);border-top:1px solid var(--border)">
+  V2 Decision-Driven Upgrade &mdash; JPMC Take-Home Project
+</footer>
+</body>
+</html>

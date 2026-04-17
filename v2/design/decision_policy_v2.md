@@ -35,20 +35,19 @@ V2 replaces fixed thresholds with a **score-band framework** that treats the mod
 | **D — Low** | 0.05 – 0.15 | Unlikely >$50K but not excluded | Broad digital only if budget allows |
 | **E — Very Low** | < 0.05 | Almost certainly <= $50K | Exclude from income-targeted campaigns |
 
-### What V1 Data Shows by Band (validation set)
+### Empirical Score-Band Breakdown (validation set, 29,929 rows, 1,857 positives)
 
-From the V1 threshold sweep:
+> Source: `v2_compute_results.json` — V1-equivalent model retrained with frozen hyperparameters.
 
-| Score Range | Approx Volume | Cumulative Recall | Marginal Precision |
-|------------|--------------|-------------------|-------------------|
-| >= 0.50 | ~1,133 | 47.2% | 77.3% |
-| 0.30 – 0.50 | ~739 | 63.2% | ~44% |
-| 0.20 – 0.30 | ~684 | 73.2% | ~33% |
-| 0.10 – 0.20 | ~1,365 | 83.7% | ~22% |
-| 0.05 – 0.10 | ~1,832 | 90.5% | ~11% |
-| < 0.05 | ~24,176 | 100% | ~1% |
+| Band | Score Range | N | % of Pop | Positives | Precision |
+|------|-----------|----:|--------:|---------:|----------:|
+| A: Very High | >= 0.50 | 1,133 | 3.8% | 876 | 77.3% |
+| B: High | 0.30 – 0.50 | 739 | 2.5% | 298 | 40.3% |
+| C: Marginal | 0.15 – 0.30 | 1,209 | 4.0% | 277 | 22.9% |
+| D: Low | 0.05 – 0.15 | 2,672 | 8.9% | 230 | 8.6% |
+| E: Very Low | < 0.05 | 24,176 | 80.8% | 176 | 0.7% |
 
-**Key insight**: Band C (0.15–0.30) is the **marginal zone** where the business decision matters most. People in this band could go either way — the threshold policy determines whether they're contacted.
+**Key insight**: Band C (0.15–0.30) is the **marginal zone** where the business decision matters most. Bands A+B capture 63% of all positives in just 6.3% of the population.
 
 ## 4. Budget-Constrained Threshold Selection
 
@@ -63,19 +62,21 @@ Given:
 
 The business question becomes: "For a budget of N contacts, what precision and recall do I get?"
 
-### Budget-to-Outcome Table (validation set, 29,929 rows)
+### Budget-to-Outcome Table (empirical, validation set, 29,929 rows, 1,857 positives)
 
-| Budget (contacts) | Approx Threshold | Precision | Recall | Expected True Positives |
-|-------------------|-----------------|-----------|--------|------------------------|
-| 500 | ~0.60 | ~81% | ~22% | ~405 |
-| 1,000 | ~0.50 | ~77% | ~42% | ~770 |
-| 1,500 | ~0.40 | ~70% | ~56% | ~1,050 |
-| 2,000 | ~0.30 | ~63% | ~63% | ~1,260 |
-| 2,500 | ~0.20 | ~53% | ~73% | ~1,325 |
-| 3,500 | ~0.10 | ~40% | ~84% | ~1,400 |
-| 5,000 | ~0.05 | ~29% | ~91% | ~1,450 |
+| Top K Contacts | Score at Kth | True Positives | Precision | Recall |
+|---------------:|-------------:|---------------:|----------:|-------:|
+| 100 | 0.977 | 100 | 100.0% | 5.4% |
+| 500 | 0.800 | 463 | 92.6% | 24.9% |
+| 1,000 | 0.558 | 798 | 79.8% | 43.0% |
+| 1,500 | 0.392 | 1,036 | 69.1% | 55.8% |
+| 2,000 | 0.277 | 1,214 | 60.7% | 65.4% |
+| 3,000 | 0.156 | 1,440 | 48.0% | 77.5% |
+| 5,000 | 0.065 | 1,639 | 32.8% | 88.3% |
 
-**Diminishing returns are visible**: doubling the budget from 1,000 to 2,000 contacts adds ~490 true positives. Doubling again from 2,000 to 4,000 adds only ~200 more.
+> Source of truth: `v2_compute_results.json`
+
+**Diminishing returns are empirically clear**: the first 500 contacts yield 463 TP (0.93 per contact). Contacts 2,000-3,000 yield only 226 TP (0.23 per contact).
 
 ## 5. Simple Value/Cost Framework
 
@@ -119,11 +120,10 @@ This connects the score layer and the segment layer into a unified decision.
 
 ## 8. Implementation Status
 
-| Component | Status | Phase |
-|-----------|--------|-------|
-| Score-band definition | **Designed** (this doc) | Phase 1 |
-| Budget-to-outcome table | **Estimated** from V1 sweep | Phase 1 |
-| V/C framework | **Designed** (this doc) | Phase 1 |
-| Segment-conditional thresholds | **Proposed** | Phase 2 |
-| Actual score-band computation on full data | Not yet | Phase 2 |
-| Score x Segment operating matrix | Not yet | Phase 2 (Workstream D) |
+| Component | Status | Type |
+|-----------|--------|------|
+| Score-band definition + empirical breakdown | **Complete** | Empirical result |
+| Budget-to-outcome table (top-k) | **Complete** | Empirical result |
+| V/C framework | **Complete** | Design with assumed economics |
+| Segment-conditional thresholds | **Proposed** | Design artifact |
+| Score x Segment operating matrix | **Complete** (macro); exploratory (micro) | Design + exploratory |

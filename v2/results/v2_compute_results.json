@@ -1,0 +1,284 @@
+{
+  "score_band_analysis": {
+    "bands": [
+      {
+        "band": "A: Very High",
+        "lo": 0.5,
+        "hi": 1.01,
+        "n": 1133,
+        "n_pos": 876,
+        "precision": 0.7732,
+        "pct_of_val": 3.8,
+        "weighted_n": 2033840.0,
+        "weighted_pct": 3.9
+      },
+      {
+        "band": "B: High",
+        "lo": 0.3,
+        "hi": 0.5,
+        "n": 739,
+        "n_pos": 298,
+        "precision": 0.4032,
+        "pct_of_val": 2.5,
+        "weighted_n": 1318716.0,
+        "weighted_pct": 2.5
+      },
+      {
+        "band": "C: Marginal",
+        "lo": 0.15,
+        "hi": 0.3,
+        "n": 1209,
+        "n_pos": 277,
+        "precision": 0.2291,
+        "pct_of_val": 4.0,
+        "weighted_n": 2085382.0,
+        "weighted_pct": 4.0
+      },
+      {
+        "band": "D: Low",
+        "lo": 0.05,
+        "hi": 0.15,
+        "n": 2672,
+        "n_pos": 230,
+        "precision": 0.0861,
+        "pct_of_val": 8.9,
+        "weighted_n": 4701825.0,
+        "weighted_pct": 9.0
+      },
+      {
+        "band": "E: Very Low",
+        "lo": 0.0,
+        "hi": 0.05,
+        "n": 24176,
+        "n_pos": 176,
+        "precision": 0.0073,
+        "pct_of_val": 80.8,
+        "weighted_n": 42046373.0,
+        "weighted_pct": 80.6
+      }
+    ],
+    "cumulative_capture": [
+      {
+        "top_k": 100,
+        "true_pos": 100,
+        "recall": 0.0539,
+        "precision": 1.0,
+        "threshold_at_k": 0.9768
+      },
+      {
+        "top_k": 500,
+        "true_pos": 463,
+        "recall": 0.2493,
+        "precision": 0.926,
+        "threshold_at_k": 0.8004
+      },
+      {
+        "top_k": 1000,
+        "true_pos": 798,
+        "recall": 0.4297,
+        "precision": 0.798,
+        "threshold_at_k": 0.5576
+      },
+      {
+        "top_k": 1500,
+        "true_pos": 1036,
+        "recall": 0.5579,
+        "precision": 0.6907,
+        "threshold_at_k": 0.3919
+      },
+      {
+        "top_k": 2000,
+        "true_pos": 1214,
+        "recall": 0.6537,
+        "precision": 0.607,
+        "threshold_at_k": 0.2769
+      },
+      {
+        "top_k": 3000,
+        "true_pos": 1440,
+        "recall": 0.7754,
+        "precision": 0.48,
+        "threshold_at_k": 0.1561
+      },
+      {
+        "top_k": 5000,
+        "true_pos": 1639,
+        "recall": 0.8826,
+        "precision": 0.3278,
+        "threshold_at_k": 0.0651
+      }
+    ],
+    "val_n": 29929,
+    "val_pos": 1857,
+    "score_stats": {
+      "mean": 0.0608,
+      "median": 0.004,
+      "p90": 0.1564,
+      "p95": 0.3928,
+      "p99": 0.9025
+    }
+  },
+  "second_pass_segmentation": {
+    "working_age_n": 116329,
+    "k_eval": [
+      {
+        "k": 3,
+        "cost": 113029.60324400006,
+        "min_cluster_pct": 0.1
+      },
+      {
+        "k": 4,
+        "cost": 102646.96528800979,
+        "min_cluster_pct": 0.1
+      },
+      {
+        "k": 5,
+        "cost": 87061.16702151323,
+        "min_cluster_pct": 0.1
+      },
+      {
+        "k": 6,
+        "cost": 73447.21180895566,
+        "min_cluster_pct": 0.1
+      }
+    ],
+    "chosen_k": 3,
+    "final_k": 2,
+    "profiles": {
+      "0": {
+        "segment_id": 0,
+        "raw_size": 87829,
+        "raw_pct": 75.5,
+        "weighted_pct": 75.1,
+        "target_rate": 13.24,
+        "enrichment_vs_seg2": 1.3,
+        "features": {
+          "age": {
+            "mean": 40.2,
+            "median": 39.0
+          },
+          "education": {
+            "High school graduate": 33.5,
+            "Some college but no degree": 20.6,
+            "Bachelors degree(BA AB BS)": 17.3
+          },
+          "marital stat": {
+            "Married-civilian spouse present": 63.0,
+            "Never married": 20.9,
+            "Divorced": 10.2
+          },
+          "sex": {
+            "Male": 54.6,
+            "Female": 45.4
+          },
+          "major occupation code": {
+            "Adm support including clerical": 14.8,
+            "Professional specialty": 14.6,
+            "Executive admin and managerial": 13.6
+          },
+          "class of worker": {
+            "Private": 69.9,
+            "Self-employed-not incorporated": 8.4,
+            "Local government": 8.0
+          },
+          "tax filer stat": {
+            "Joint both under 65": 59.8,
+            "Single": 29.2,
+            "Head of household": 7.0
+          },
+          "weeks worked in year": {
+            "mean": 49.6,
+            "median": 52.0
+          },
+          "own business or self employed": {
+            "0": 81.9,
+            "2": 15.3,
+            "1": 2.8
+          },
+          "detailed household summary in household": {
+            "Householder": 56.7,
+            "Spouse of householder": 27.4,
+            "Child 18 or older": 8.3
+          }
+        }
+      },
+      "1": {
+        "segment_id": 1,
+        "raw_size": 28500,
+        "raw_pct": 24.5,
+        "weighted_pct": 24.9,
+        "target_rate": 0.67,
+        "enrichment_vs_seg2": 0.07,
+        "features": {
+          "age": {
+            "mean": 33.1,
+            "median": 32.0
+          },
+          "education": {
+            "High school graduate": 32.9,
+            "Some college but no degree": 22.5,
+            "Bachelors degree(BA AB BS)": 9.6
+          },
+          "marital stat": {
+            "Married-civilian spouse present": 47.0,
+            "Never married": 38.4,
+            "Divorced": 7.1
+          },
+          "sex": {
+            "Female": 69.0,
+            "Male": 31.0
+          },
+          "major occupation code": {
+            "Not in universe": 63.8,
+            "Other service": 7.7,
+            "Adm support including clerical": 5.4
+          },
+          "class of worker": {
+            "Not in universe": 63.1,
+            "Private": 28.5,
+            "Self-employed-not incorporated": 2.8
+          },
+          "tax filer stat": {
+            "Joint both under 65": 42.4,
+            "Nonfiler": 35.8,
+            "Single": 17.2
+          },
+          "weeks worked in year": {
+            "mean": 6.8,
+            "median": 0.0
+          },
+          "own business or self employed": {
+            "0": 91.6,
+            "2": 7.6,
+            "1": 0.8
+          },
+          "detailed household summary in household": {
+            "Spouse of householder": 34.8,
+            "Householder": 29.4,
+            "Child 18 or older": 24.6
+          }
+        }
+      }
+    },
+    "features_used": {
+      "continuous": [
+        "age",
+        "weeks worked in year",
+        "capital gains",
+        "dividends from stocks",
+        "wage per hour"
+      ],
+      "categorical": [
+        "education",
+        "marital stat",
+        "sex",
+        "major occupation code",
+        "major industry code",
+        "class of worker",
+        "tax filer stat",
+        "own business or self employed",
+        "detailed household summary in household"
+      ]
+    }
+  }
+}

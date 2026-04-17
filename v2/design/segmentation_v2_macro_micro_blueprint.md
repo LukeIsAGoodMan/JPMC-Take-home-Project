@@ -143,37 +143,33 @@ V1's feature selection was curated but informal. V2 formalizes the criteria:
 
 This rubric will be applied formally in `segmentation_feature_scorecard.md` during Phase 2.
 
-## 9. Expected V2 Segmentation Output
+## 9. Actual V2 Segmentation Output (Exploratory)
 
-After Phase 2 execution, the expected deliverable is:
+The second-pass clustering was executed on a rules-based working-age approximation (116,329 rows). It produced **2 sub-segments** after micro-cluster absorption:
 
 ```
-Layer 1 (Macro, from V1):
+Layer 1 (Macro, from V1 — frozen):
   Seg 0: Seniors (20%)
   Seg 1: Youth (33%)
-  Seg 2: Working-Age (47%) → subdivided by Layer 2
+  Seg 2: Working-Age (47%)
 
-Layer 2 (Micro, from V2, within Seg 2):
-  Sub-A: [named from data]  (~X% of seg 2)
-  Sub-B: [named from data]  (~Y% of seg 2)
-  Sub-C: [named from data]  (~Z% of seg 2)
+Layer 2 (Exploratory, within rules-based working-age approximation):
+  Sub-0: Active Workforce Earners (76% of WA, 13.2% >50K)
+  Sub-1: Working-Age Non-Employed (24% of WA, 0.67% >50K)
 ```
 
-Each sub-segment will have:
-- Weighted size and share
-- >$50K enrichment (profiling only)
-- Defining features
-- Marketing recommendation
-- Connection to the classifier's score distribution
+**This is an exploratory result, not a formally adopted Layer 2.** It used a rules-based approximation of V1 Segment 2 (see `second_pass_lineage_note.md`), and the 2-sub-segment outcome is coarser than originally hypothesized.
+
+The finding is directionally informative: within working-age, the primary structural differentiator is labor-force attachment. Finer occupation/industry-level splits were unstable in K-Prototypes.
 
 ## 10. Implementation Status
 
-| Component | Status | Phase |
-|-----------|--------|-------|
-| Macro layer (V1) | **Frozen** | V1 |
-| Second-pass design | **Designed** (this doc) | Phase 1 |
-| Feature scorecard rubric | **Designed** | Phase 1 |
-| Second-pass clustering execution | Not yet | Phase 2 |
-| Exploratory vs operational comparison | Not yet | Phase 2 |
-| Sub-segment profiling + naming | Not yet | Phase 2 |
-| Score x sub-segment integration | Not yet | Phase 2 (Workstream D) |
+| Component | Status | Type |
+|-----------|--------|------|
+| Macro layer (V1) | **Frozen** | Adopted baseline |
+| Second-pass design | **Complete** | Design artifact |
+| Feature scorecard rubric | **Complete** | Design artifact |
+| Second-pass clustering | **Executed** | Exploratory empirical (rules-based population) |
+| Sub-segment profiling | **Complete** | Exploratory empirical |
+| Formal Layer 2 adoption | **Not done** | Requires exact V1 labels + re-evaluation |
+| Score x sub-segment integration | **Provisional** | Uses exploratory sub-segments |

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Working-Age Sub-Segment Profiles — V2</title>
+<style>
+  :root { --text:#1a1a2e; --muted:#64748b; --border:#e2e8f0; --bg:#fafafa;
+          --blue:#2563eb; --green:#059669; --amber:#d97706; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; color:var(--text);
+         background:var(--bg); line-height:1.6; max-width:800px; margin:0 auto; padding:32px 24px; }
+  h1 { font-size:1.6rem; font-weight:800; margin-bottom:4px; }
+  .sub { color:var(--muted); margin-bottom:24px; font-size:0.9rem; }
+  .badge { display:inline-block; background:#dbeafe; color:var(--blue); padding:2px 10px;
+           border-radius:12px; font-size:0.75rem; font-weight:600; }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:0.9rem; }
+  th { background:#f1f5f9; padding:8px 12px; text-align:left; font-size:0.8rem;
+       text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); border-bottom:2px solid var(--border); }
+  td { padding:8px 12px; border-bottom:1px solid var(--border); }
+  .num { text-align:right; font-family:monospace; }
+  .card { border:1px solid var(--border); border-radius:12px; padding:20px; margin:20px 0; background:#fff; }
+  .card h2 { font-size:1.1rem; margin-bottom:4px; }
+  .card .meta { font-size:0.85rem; color:var(--muted); margin-bottom:12px; }
+  .card ul { padding-left:18px; font-size:0.88rem; }
+  .card ul li { margin-bottom:3px; }
+  .card .action { margin-top:12px; padding:10px; background:#f8fafc; border-radius:8px; font-size:0.85rem; }
+  .arch { background:#f1f5f9; border-radius:8px; padding:16px; margin:16px 0; font-family:monospace;
+          font-size:0.85rem; line-height:1.8; white-space:pre; }
+  .note { font-size:0.8rem; color:var(--muted); margin-top:24px; padding-top:12px; border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<h1>Working-Age Sub-Segments <span class="badge">V2 Exploratory</span></h1>
+<p class="sub">Second-pass K-Prototypes on a rules-based approximation of the V1 working-age macro segment (not exact V1 labels). Target and weight excluded from clustering. <strong>Status: exploratory — not an accepted Layer 2 segmentation.</strong></p>
+
+<table>
+  <tr><th>Sub-Seg</th><th>Name</th><th class="num">N</th><th class="num">% of WA</th><th class="num">&gt;50K</th><th class="num">Enrich</th></tr>
+  <tr><td>0</td><td>Active Workforce Earners</td><td class="num">87,829</td><td class="num">75.5%</td><td class="num">13.2%</td><td class="num">1.30x</td></tr>
+  <tr><td>1</td><td>Working-Age Non-Employed</td><td class="num">28,500</td><td class="num">24.5%</td><td class="num">0.67%</td><td class="num">0.07x</td></tr>
+</table>
+
+<div class="card" style="border-top:4px solid var(--green);">
+  <h2>Sub-Segment 0: Active Workforce Earners</h2>
+  <div class="meta">75.5% of working-age &middot; 13.2% &gt;$50K &middot; 1.3x enrichment</div>
+  <ul>
+    <li>Mean age <strong>40</strong>; majority married (63%); male 55%</li>
+    <li>Education: HS grad 34%, some college 21%, bachelor's 17%</li>
+    <li>Occupations: admin support 15%, professional 15%, exec/managerial 14%</li>
+    <li>Private sector 70%, self-employed 8%; ~49 weeks/year worked</li>
+    <li>Joint tax filer 62%, single 28%</li>
+  </ul>
+  <div class="action">
+    <strong>Marketing:</strong> Primary commercial targeting segment. Premium financial products, investment accounts, career-stage offers. Digital + advisor channels. The classifier score provides continuous sub-prioritization within this group.
+  </div>
+</div>
+
+<div class="card" style="border-top:4px solid var(--amber);">
+  <h2>Sub-Segment 1: Working-Age Non-Employed</h2>
+  <div class="meta">24.5% of working-age &middot; 0.67% &gt;$50K &middot; 0.07x enrichment</div>
+  <ul>
+    <li>Mean age <strong>33</strong>; female 69%; never married 38%</li>
+    <li>64% "Not in universe" for occupation (not in detailed labor force)</li>
+    <li>63% "Not in universe" for class of worker</li>
+    <li>~15 weeks/year worked; low labor-force attachment</li>
+    <li>Nonfiler 38%, joint filer 35%</li>
+  </ul>
+  <div class="action">
+    <strong>Marketing:</strong> Low direct income-targeting value. Likely homemakers, students, or transitional. Reach via household-level products (joint accounts, family insurance) or career-transition offers. Not suitable for premium individual targeting.
+  </div>
+</div>
+
+<h2 style="font-size:1rem; margin-top:24px;">Full V2 Two-Layer Architecture</h2>
+<div class="arch">Population (199,523)
+  ├── Seniors (~14%)              → retirement products
+  ├── Youth/Dependents (~28%)     → family-indirect
+  └── Working-Age (~58%)
+        ├── Active Workforce (76%) → primary targeting
+        └── Non-Employed (24%)     → household-indirect</div>
+
+<p class="note">
+  <strong>Status: Exploratory.</strong> The second-pass found 2 stable sub-segments (employed vs non-employed). Finer splits were unstable — every k&ge;3 produced micro-clusters in k-evaluation. The employed/non-employed split is meaningful for marketing but does not provide the occupation-level granularity originally hypothesized. The classifier score serves as the continuous sub-prioritization dimension within the Active Workforce sub-segment.
+</p>
+
+</body>
+</html>
